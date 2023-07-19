@@ -1,0 +1,71 @@
+### Сохранить ModelNode
+POST http://localhost:8093/model
+
+{
+    "id":"1",
+    "method":"save",
+    "params":{
+        "request":{
+            "mongoId":"<modelMongoId2>",
+            "title":"<model title>"
+        }
+    }
+}
+
+### Получить запись по mongoId
+POST http://localhost:8093/model
+
+{
+    "id":1,
+    "method":"getByMongoId",
+    "params":{
+        "mongoId": "<modelMongoId>"
+    }
+}
+
+### Получить все записи
+POST http://localhost:8093/model
+
+{
+    "id":1,
+    "method":"getAll"
+}
+
+### Обновить запись
+POST http://localhost:8093/model
+
+{
+    "id":"1",
+    "method":"update",
+    "params":{
+        "request":{
+            "mongoId":"<modelMongoId>",
+            "title":"<new model title>"
+        }
+    }
+}
+
+### Удалить запись по mongoId
+POST http://localhost:8093/model
+
+{
+    "id":"1",
+    "method":"delete",
+    "params":{
+        "mongoId":"<modelMongoId>"
+    }
+}
+
+###Создать отношение
+POST http://localhost:8093/model
+
+{
+    "id":"1",
+    "method":"createRelationShip",
+    "params":{
+        "modelMongoId":"<modelMongoId>",
+        "classMongoId":"<classMongoId>"
+    }
+}
+
+

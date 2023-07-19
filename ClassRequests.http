@@ -1,0 +1,75 @@
+### Сохранить ClassNode без ModelNode
+POST http://localhost:8093/class
+
+{
+    "id":"1",
+    "method":"save",
+    "params":{
+        "request":{
+            "mongoId":"<classMongoId>",
+            "title":"<class title>"
+        }
+    }
+}
+
+### Сохранить ClassNode и ModelNode с отношением (Model)-[:RELATIONSHIP]->(Class)
+POST http://localhost:8093/class
+
+{
+    "id":"1",
+    "method":"save",
+    "params":{
+        "request":{
+            "mongoId":"<classMongoId>",
+            "title":"<classTitle>",
+            "modelRequest":{
+                "mongoId":"<modelMongoId>",
+                "title":"<modelTitle>"
+            }
+        }
+    }
+}
+
+### Получить запись по mongoId
+POST http://localhost:8093/class
+
+{
+    "id":1,
+    "method":"getByMongoId",
+    "params":{
+        "mongoId": "<classMongoId>"
+    }
+}
+
+### Получить все записи
+POST http://localhost:8093/class
+
+{
+    "id":1,
+    "method":"getAll"
+}
+
+### Обновить запись
+POST http://localhost:8093/class
+
+{
+    "id":"1",
+    "method":"update",
+    "params":{
+        "request":{
+            "mongoId":"<classMongoId>",
+            "title":"<new class title>"
+        }
+    }
+}
+
+### Удалить запись по mongoId
+POST http://localhost:8093/class
+
+{
+    "id":"1",
+    "method":"delete",
+    "params":{
+        "mongoId":"<classMongoId>"
+    }
+}
