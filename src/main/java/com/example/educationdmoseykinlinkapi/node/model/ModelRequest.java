@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 public class ModelRequest {
 
     private final Long id;
+
     private final String mongoId;
+
     private final String title;
+
+    private final String classMongoId;
 }

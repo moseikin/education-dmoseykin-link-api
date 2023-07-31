@@ -1,7 +1,6 @@
 #### Пример работы с графовой БД neo4j
+- java 11
 - mongoId уникально для всех ModelNode, у ClassNode свой уникальный mongoId
-- Через /class отношения устанавливаются при сохранении, если есть вложенная нода
-- Через /model отношения устанавливаются вызовом createRelationShip(String modelMongoId, String classMongoId)
-- ClassNode и ModelNode могут иметь только одну связь (входящую и исходящую) соответственно
-- Если одна из пары нод имеет связь, то вызов метода createRelationShip никакого эффекта не даст
+- Отношения устанавливаются при сохранении ModelNode, если указан classMongoId существующей ClassNode
+- У ClassNode к ModelNode отношение Многие-к-одному
 - Примеры запросов в [ModelRequests.http](ModelRequests.http) и [ClassRequests.http](ClassRequests.http)

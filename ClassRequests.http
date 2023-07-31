@@ -1,4 +1,4 @@
-### Сохранить ClassNode без ModelNode
+### Сохранить ClassNode
 POST http://localhost:8093/class
 
 {
@@ -8,24 +8,6 @@ POST http://localhost:8093/class
         "request":{
             "mongoId":"<classMongoId>",
             "title":"<class title>"
-        }
-    }
-}
-
-### Сохранить ClassNode и ModelNode с отношением (Model)-[:RELATIONSHIP]->(Class)
-POST http://localhost:8093/class
-
-{
-    "id":"1",
-    "method":"save",
-    "params":{
-        "request":{
-            "mongoId":"<classMongoId>",
-            "title":"<classTitle>",
-            "modelRequest":{
-                "mongoId":"<modelMongoId>",
-                "title":"<modelTitle>"
-            }
         }
     }
 }

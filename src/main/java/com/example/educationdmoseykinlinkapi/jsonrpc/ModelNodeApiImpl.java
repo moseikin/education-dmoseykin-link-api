@@ -40,9 +40,4 @@ public class ModelNodeApiImpl implements ModelNodeApi {
     public void delete(String mongoId) {
         modelService.delete(mongoId);
     }
-
-    @Override
-    public void createRelationShip(String modelMongoId, String classMongoId) {
-        modelService.createRelationShip(modelMongoId, classMongoId);
-    }
 }

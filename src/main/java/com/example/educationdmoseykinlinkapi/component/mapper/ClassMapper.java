@@ -8,13 +8,12 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = ModelMapper.class)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ClassMapper {
 
-    @Mapping(source = "modelRequest", target = "modelNode")
     ClassNode toClassNode(ClassRequest classRequest);
 
-    @Mapping(source = "modelNode", target = "modelResponse")
+    @Mapping(source = "mongoId", target = "classMongoId")
+    @Mapping(source = "title", target = "classTitle")
     ClassResponse toClassResponse(ClassNode classNode);
 }

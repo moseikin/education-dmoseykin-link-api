@@ -10,7 +10,7 @@ import java.util.List;
 @JsonRpcService("/class")
 public interface ClassNodeApi {
 
-    ClassResponse save(@JsonRpcParam(value = "request") ClassRequest modelRequest);
+    ClassResponse save(@JsonRpcParam(value = "request") ClassRequest classRequest);
 
     ClassResponse getByMongoId(@JsonRpcParam(value = "mongoId") String mongoId);
 
@@ -20,4 +20,5 @@ public interface ClassNodeApi {
 
     void delete(@JsonRpcParam(value = "mongoId") String mongoId);
 
+    ClassResponse getByRelatedModelMongoId(@JsonRpcParam(value = "modelMongoId") String modelMongoId);
 }

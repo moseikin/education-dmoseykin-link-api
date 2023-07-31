@@ -16,4 +16,6 @@ public interface ClassService {
     ClassResponse update(ClassRequest classRequest);
 
     void delete(String mongoId);
+
+    ClassResponse getByRelatedModelMongoId(String modelMongoId);
 }

@@ -19,8 +19,4 @@ public interface ModelNodeApi {
     ModelResponse update(@JsonRpcParam(value = "request") ModelRequest modelRequest);
 
     void delete(@JsonRpcParam(value = "mongoId") String mongoId);
-
-    void createRelationShip(@JsonRpcParam(value = "modelMongoId") String modelMongoId,
-                            @JsonRpcParam(value = "classMongoId") String classMongoId);
-
 }

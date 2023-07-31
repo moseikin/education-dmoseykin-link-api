@@ -40,4 +40,9 @@ public class ClassNodeApiImpl implements ClassNodeApi {
     public void delete(String mongoId) {
         classService.delete(mongoId);
     }
+
+    @Override
+    public ClassResponse getByRelatedModelMongoId(String modelMongoId) {
+        return classService.getByRelatedModelMongoId(modelMongoId);
+    }
 }

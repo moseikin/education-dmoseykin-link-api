@@ -15,7 +15,9 @@ public interface ModelRepository extends Neo4jRepository<ModelNode, Long> {
 
     @Query("match (Model{mongoId:$modelMongoId}), (Class{mongoId:$classMongoId}) " +
             "where not exists ((Model)-[:RELATIONSHIP]->()) " +
-            "and not exists (()-[:RELATIONSHIP]->(Class)) " +
             "create (Model)-[:RELATIONSHIP]->(Class)")
     void createRelationship(@Param("modelMongoId") String modelMongoId, @Param("classMongoId") String classMongoId);
+
+    @Query("match (Model{mongoId:$modelMongoId})-[r:RELATIONSHIP]->(Class{mongoId:$classMongoId}) delete r")
+    void deleteRelationship(@Param("modelMongoId") String modelMongoId, @Param("classMongoId") String classMongoId);
 }

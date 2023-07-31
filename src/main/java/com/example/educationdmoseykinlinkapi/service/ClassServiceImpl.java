@@ -6,52 +6,34 @@ import com.example.educationdmoseykinlinkapi.node.clazz.ClassNode;
 import com.example.educationdmoseykinlinkapi.node.clazz.ClassRequest;
 import com.example.educationdmoseykinlinkapi.node.clazz.ClassResponse;
 import com.example.educationdmoseykinlinkapi.repository.ClassRepository;
-import com.example.educationdmoseykinlinkapi.repository.ModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ClassServiceImpl implements ClassService {
-    public static final String CLASS_WITH_THIS_MONGO_ID_EXISTS = "ClassNode с mongoId = %s уже существует";
-    public static final String MODEL_WITH_THIS_MONGO_ID_EXISTS = "ModelNode с mongoId = %s уже существует";
     private static final String NODE_NOT_FOUND = "Нода с id = %s не найдена";
+    private static final String NODE_WITH_MONGO_ID_EXISTS = "Нода с mongoId = %s уже есть в БД";
+
     private final ClassRepository classRepository;
     private final ClassMapper classMapper;
-    private final ModelRepository modelRepository;
 
-    // Если по mongoId находится ранее сохраненный ClassNode, бросаем исключение
-    // Если присутствует вложенная ModelNode, то по mongoId получаем ее из БД.
-    // Если нашли, то бросаем исключение
     @Override
+    @Transactional
     public ClassResponse save(ClassRequest classRequest) {
-        checkIsClassNodePresent(classRequest.getMongoId());
-
+        classRepository.findByMongoId(classRequest.getMongoId())
+                .ifPresent(classNode -> {
+                    throw new IllegalStateException(String.format(NODE_WITH_MONGO_ID_EXISTS, classRequest.getMongoId()));
+                });
         ClassNode classNode = classMapper.toClassNode(classRequest);
-
-        if (classRequest.getModelRequest() != null) {
-            checkIsModelNodePresent(classRequest.getModelRequest().getMongoId());
-        }
 
         ClassNode savedClassNode = classRepository.save(classNode);
         return classMapper.toClassResponse(savedClassNode);
-    }
-
-    private void checkIsClassNodePresent(String mongoId) {
-        classRepository.findByMongoId(mongoId)
-                .ifPresent(classNode -> {
-                    throw new IllegalStateException(String.format(CLASS_WITH_THIS_MONGO_ID_EXISTS, mongoId));
-                });
-    }
-
-    private void checkIsModelNodePresent(String mongoId) {
-        modelRepository.findByMongoId(mongoId)
-                .ifPresent(modelNode -> {
-                    throw new IllegalStateException(String.format(MODEL_WITH_THIS_MONGO_ID_EXISTS, mongoId));
-                });
     }
 
     @Override
@@ -69,21 +51,13 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    @Transactional
     public ClassResponse update(ClassRequest classRequest) {
-        setModelNodeToNullIfPresent(classRequest);
-
         ClassNode classNode = getClassNodeByMongoId(classRequest.getMongoId());
 
         classNode.setTitle(classRequest.getTitle());
         ClassNode savedClassNode = classRepository.save(classNode);
         return classMapper.toClassResponse(savedClassNode);
-    }
-
-    // обновляем без связей. Чтобы обновить ModelNode, есть свой метод
-    private void setModelNodeToNullIfPresent(ClassRequest classRequest) {
-        if (classRequest.getModelRequest() != null) {
-            classRequest.setModelRequest(null);
-        }
     }
 
     private ClassNode getClassNodeByMongoId(String mongoId) {
@@ -92,9 +66,16 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    @Transactional
     public void delete(String mongoId) {
         ClassNode optionalClassNode = classRepository.findByMongoId(mongoId)
                 .orElseThrow(() -> new NodeNotFoundException(String.format(NODE_NOT_FOUND, mongoId)));
         classRepository.delete(optionalClassNode);
+    }
+
+    @Override
+    public ClassResponse getByRelatedModelMongoId(String modelMongoId) {
+        ClassNode classNode = classRepository.findByModelNodesMongoId(modelMongoId);
+        return classMapper.toClassResponse(classNode);
     }
 }

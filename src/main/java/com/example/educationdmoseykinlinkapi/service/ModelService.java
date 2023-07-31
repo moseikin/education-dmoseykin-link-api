@@ -16,6 +16,4 @@ public interface ModelService {
     ModelResponse update(ModelRequest modelRequest);
 
     void delete(String mongoId);
-
-    void createRelationShip(String modelMongoId, String classMongoId);
 }

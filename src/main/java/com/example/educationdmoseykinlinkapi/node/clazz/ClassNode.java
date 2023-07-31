@@ -8,7 +8,8 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +24,5 @@ public class ClassNode {
     private String mongoId;
     private String title;
 
-    @Relationship(type = "RELATIONSHIP", direction = Relationship.Direction.INCOMING)
-    private ModelNode modelNode;
+    private List<ModelNode> modelNodes;
 }
